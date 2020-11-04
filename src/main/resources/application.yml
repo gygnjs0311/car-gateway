@@ -1,0 +1,74 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: receipt
+          uri: http://localhost:8081
+          predicates:
+            - Path=/receipts/** 
+        - id: repair
+          uri: http://localhost:8082
+          predicates:
+            - Path=/repairs/** 
+        - id: payment
+          uri: http://localhost:8083
+          predicates:
+            - Path=/payments/** 
+        - id: display
+          uri: http://localhost:8084
+          predicates:
+            - Path= /displays/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: receipt
+          uri: http://receipt:8080
+          predicates:
+            - Path=/receipts/** 
+        - id: repair
+          uri: http://repair:8080
+          predicates:
+            - Path=/repairs/** 
+        - id: payment
+          uri: http://payment:8080
+          predicates:
+            - Path=/payments/** 
+        - id: display
+          uri: http://display:8080
+          predicates:
+            - Path= /displays/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
